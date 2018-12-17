@@ -1,2 +1,2 @@
 # StealthGame_01
-Unreal learning project
+Unreal learning project. Working with Sourcetree.
