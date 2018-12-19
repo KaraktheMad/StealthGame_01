@@ -22,7 +22,7 @@ AFPSExtractionZone::AFPSExtractionZone()
 	// Shows the wire frame of the collusion volume while working on it
 	OverlapComp->SetHiddenInGame(false);
 
-	// This is an alternaive way bind the event whenever we overlap the player. See void AFPSObjective::NotifyActorBeginOverlap(AActor* OtherActor)
+	// This is an alternative way bind the event whenever we overlap the player. See void AFPSObjective::NotifyActorBeginOverlap(AActor* OtherActor)
 	// in FPSObjective.cpp for code.
 	OverlapComp->OnComponentBeginOverlap.AddDynamic(this, &AFPSExtractionZone::HandleOverlap);
 
