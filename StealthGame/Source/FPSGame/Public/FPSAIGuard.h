@@ -8,7 +8,18 @@
 
 class UPawnSensingComponent;
 /* Remember to add "AIModule to the FPSGame.Build.cs file > 
- PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "AIModule" });*/
+ PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "AIModule" });
+ */
+
+UENUM(BlueprintType)
+enum class EAIState : uint8 // to use in Blueprint, it must be unint8
+{
+	Idle,
+
+	Suspicious,
+
+	Alerted
+};
 
 UCLASS()
 class FPSGAME_API AFPSAIGuard : public ACharacter
@@ -28,6 +39,24 @@ protected:
 
 	UFUNCTION()
 	void OnPawnSeen(APawn* SeenPawn);
+
+	UFUNCTION()
+	void OnNoiseHeard(APawn* NoiseInstigator, const FVector& Location, float Volume);
+
+	// The original rotation of the guard
+	FRotator OriginalRotation;
+
+	UFUNCTION()
+	void ResetOrientation();
+
+	FTimerHandle TimerHandle_ResetOrientation;
+
+	EAIState GuardState;
+
+	void SetGuardState(EAIState NewState);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "AI")
+	void OnStateChanged(EAIState NewState);
 
 public:	
 	// Called every frame
