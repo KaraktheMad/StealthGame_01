@@ -29,6 +29,11 @@ AFPSProjectile::AFPSProjectile()
 
 	// Die after 3 seconds by default
 	InitialLifeSpan = 3.0f;
+
+	// Sets up networking for multi player
+	SetReplicates(true);
+	SetReplicateMovement(true);
+
 }
 
 
@@ -42,8 +47,13 @@ void AFPSProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPr
 		
 	}
 
-	MakeNoise(1.0f, Instigator);
+	// check to be sure called on server
+	if (Role == ROLE_Authority)
+	{
+		MakeNoise(1.0f, Instigator);
 
-	//moved from inside the if() statement
-	Destroy();
+		Destroy();
+	}
+	
+	
 }
