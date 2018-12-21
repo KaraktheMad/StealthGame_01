@@ -5,6 +5,7 @@
 #include "DrawDebugHelpers.h"
 #include <GameFramework/Pawn.h>
 #include "FPSGameMode.h"
+#include <UnrealNetwork.h>
 
 
 // Sets default values
@@ -95,6 +96,11 @@ void AFPSAIGuard::ResetOrientation()
 	SetGuardState(EAIState::Idle);
 }
 
+void AFPSAIGuard::OnRep_GuardState()
+{
+	OnStateChanged(GuardState);
+}
+
 void AFPSAIGuard::SetGuardState(EAIState NewState)
 {
 	if (GuardState == NewState)
@@ -103,8 +109,9 @@ void AFPSAIGuard::SetGuardState(EAIState NewState)
 	}
 
 	GuardState = NewState;
+	OnRep_GuardState(); // so the player on the server sees the changes as well.
 
-	OnStateChanged(GuardState);
+	//OnStateChanged(GuardState);
 }
 
 // Called every frame
@@ -112,6 +119,13 @@ void AFPSAIGuard::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void AFPSAIGuard::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AFPSAIGuard, GuardState);
 }
 
 

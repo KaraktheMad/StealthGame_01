@@ -50,6 +50,25 @@ void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 }
 
 
+void AFPSCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	// Only run the remote view pitch if it's not a local instance.
+	if (!IsLocallyControlled())
+	{
+		// Get the relative rotation of the player arm mesh
+		FRotator NewRot = CameraComponent->RelativeRotation;
+
+		// Set the pitch to the remote pitch (the client player)
+		NewRot.Pitch = RemoteViewPitch * 360 / 255.0f; // because RemoteViewPitch is compressed to 1 byte. We have to 'decompress' it to allow negative values.
+
+		// Now set the mesh relative rotation to the remote pitch
+		CameraComponent->SetRelativeRotation(NewRot);
+	}
+	
+}
+
 void AFPSCharacter::Fire()
 {
 	
