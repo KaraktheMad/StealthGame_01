@@ -38,7 +38,7 @@ void AFPSExtractionZone::HandleOverlap(UPrimitiveComponent* OverlappedComponent,
 	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	
-		AFPSCharacter* MyPawn = Cast<AFPSCharacter>(OtherActor);
+	AFPSCharacter* MyPawn = Cast<AFPSCharacter>(OtherActor);
 	if (!MyPawn)
 	{
 		return;
